@@ -1,0 +1,37 @@
+#!/usr/local/bin/php-cgi -f
+
+<?php
+
+require("config.inc");
+require("functions.inc");
+require("shaper.inc");
+require("captiveportal.inc");
+require_once("rrd.inc");
+
+echo "Restarting webConfigurator...";
+
+/* Stop all running nginx processes */
+$pidfiles = glob("{$g['varrun_path']}/nginx*.pid");
+
+foreach ($pidfiles as $pidfile) {
+	killbypid($pidfile);
+}
+
+system_webgui_start();
+
+captiveportal_init_webgui();
+
+enable_rrd_graphing();
+
+## start the nfsen nginx
+$nginx_pid = "/var/run/nfsen-nginx.pid";
+$nginx_conf = "/usr/local/etc/nginx/nfsen-nginx.conf";
+
+if (file_exists($nginx_pid)) {
+	exec("cat $nginx_pid | /usr/bin/xargs kill");
+}
+exec("/usr/local/sbin/nginx -c $nginx_conf");
+
+echo " done.\n\n";
+
+?>
