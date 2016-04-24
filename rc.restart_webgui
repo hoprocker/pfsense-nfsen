@@ -27,6 +27,8 @@ enable_rrd_graphing();
 $nginx_pid = "/var/run/nfsen-nginx.pid";
 $nginx_conf = "/usr/local/etc/nginx/nfsen-nginx.conf";
 
+echo "Restarting the nfsen web interface...";
+
 if (file_exists($nginx_pid)) {
 	exec("cat $nginx_pid | /usr/bin/xargs kill");
 }
