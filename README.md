@@ -28,15 +28,17 @@ Follow instructions for the following sections on [this primer](https://forums.f
 
 ## Setup nfsen/nginx
 
-pfSense writes the php-fpm file on startup (!!), so replace `/etc/rc.php_ini_setup` with the file in this repo
+Replace the following files in the `/etc` directory with those in this repo:
+* `/etc/rc.php_ini_setup`
+* `/etc/rc.restart_webgui`
 
 Add the `nfsen-nginx.conf` file to `/usr/local/etc/nginx`
 
-Restart php-fpm & start nginx:
+Restart php-fpm & the webgui(s):
 
 ```
 /etc/rc.php-fpm_restart
-/usr/local/sbin/nginx -c /usr/local/etc/nginx/nfsen-nginx.conf
+/etc/rc.restart_webgui
 ```
 
 ## Check that it works
